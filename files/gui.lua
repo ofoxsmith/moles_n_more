@@ -16,9 +16,9 @@ local sunbook_nextbutton_shown = false
 local sunbook_page_scalemult = 2
 
 function OnWorldPreUpdate()
-    if PLAYER ~= nil then 
-        comp_brilliance = EntityGetFirstComponentIncludingDisabled(PLAYER, "VariableStorageComponent", "brilliance_stored") or 0
-        comp_brilliance_max = EntityGetFirstComponentIncludingDisabled(PLAYER, "VariableStorageComponent", "brilliance_max") or 0
+    if GetPlayer() ~= nil then 
+        comp_brilliance = EntityGetFirstComponentIncludingDisabled(GetPlayer(), "VariableStorageComponent", "brilliance_stored") or 0
+        comp_brilliance_max = EntityGetFirstComponentIncludingDisabled(GetPlayer(), "VariableStorageComponent", "brilliance_max") or 0
         p_brilliance = ComponentGetValue2(comp_brilliance, "value_int")
         p_brilliance_max = ComponentGetValue2(comp_brilliance_max, "value_int")
         Gui.state.bbar = (p_brilliance / p_brilliance_max) * 100
@@ -35,7 +35,7 @@ end
 Gui:AddElement(gusgui.Elements.HLayout({
     id = "gui",
     margin = { top = 5, left = 50, },
-    overrideZ = 10, 
+    overrideZ = 10,
     children = {
         gusgui.Elements.ProgressBar({
             id = "BrillianceBar",
@@ -95,7 +95,7 @@ Gui:AddElement(gusgui.Elements.VLayout({
                         element.config.scaleX = sunbookpages[sunbook_page].scaleX * sunbook_page_scalemult
                         element.config.scaleY = sunbookpages[sunbook_page].scaleY * sunbook_page_scalemult
                     end,
-                }), 
+                }),
                 gusgui.Elements.HLayout({ -- prev and next buttons
                     id = "sunbook_buttons",
                     children = {
@@ -108,6 +108,8 @@ Gui:AddElement(gusgui.Elements.VLayout({
                             onBeforeRender = function(element)
                                 if sunbookpages[sunbook_page - 1] ~= nil then
                                     element.config.hidden = false
+                                else
+                                    element.config.hidden = true
                                 end
                             end,
                             onClick = function(element)
@@ -123,6 +125,8 @@ Gui:AddElement(gusgui.Elements.VLayout({
                             onBeforeRender = function(element)
                                 if sunbookpages[sunbook_page + 1] ~= nil then
                                     element.config.hidden = false
+                                else
+                                    element.config.hidden = true
                                 end
                             end,
                             onClick = function(element)
